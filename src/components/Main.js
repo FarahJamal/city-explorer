@@ -2,12 +2,11 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
-
 import React from "react";
 import '../App.css'
 import axios from "axios";
 import Data from './Data';
-import '../App.css'
+import ErrorModal from './ErrorModal';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -23,11 +22,13 @@ class Main extends React.Component {
             display_name: '',
             class: '',
             type: '',
-            show: false
+            show: false,
+            showErr:false
         }
     }
 
     getLocationData = async (event) => {
+        try{
         event.preventDefault();
         let cityName = event.target.city.value;
         event.target.city.value = '';
@@ -53,10 +54,25 @@ class Main extends React.Component {
         this.setState({
             link: mapData.config.url,
         });
+    }
+    catch (e) {
+        this.setState({
+          showErr:true,
+          statusCode: e.response.status,
+          statusErrMsg:e.response.data.error,
+
+        });
+
+   
+    };
 
     }
 
-
+    handleClose = () => {
+        this.setState({
+            showErr:false
+        })
+    }
 
 
 
@@ -85,6 +101,13 @@ class Main extends React.Component {
                     show={this.state.show}
                 />
                 <Image  style={{'width':'1080px','height':'400px'}}src={this.state.link} thumbnail />
+                <ErrorModal
+                    showErr={this.state.showErr}
+                    statusCode={this.state.statusCode}
+                    statusErrMsg={this.state.statusErrMsg}
+                    hideErr={this.handleClose}
+
+                />
 
 </center>
                 {

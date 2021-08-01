@@ -18,8 +18,8 @@ render(){
           <Card.Body>
             <Card.Title>{this.props.display_name}</Card.Title>
             <Card.Text>
-             lat:{this.props.lat}<br/>
-             lon:{this.props.lon}<br/>
+             lat:{Math.floor(this.props.lat)}<br/>
+             lon:{Math.floor(this.props.lon)}<br/>
              class:{this.props.class}<br/>
             </Card.Text>
           </Card.Body>
