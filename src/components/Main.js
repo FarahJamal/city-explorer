@@ -5,7 +5,6 @@ import React from "react";
 import '../App.css'
 import axios from "axios";
 import Data from './Data';
-import { GoogleMap } from "react-google-maps";
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
