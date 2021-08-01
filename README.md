@@ -17,6 +17,9 @@ React App that help user to check the exact location for every city and a map fo
 ## Change Log
 
  1-8-2021 1:06pm - Application has been initialized. -->
+ 1-8-2021 1:53pm - Application has the front end. -->
+ 
+
 
 ## Credit and Collaborations
 <!-- Give credit (and a link) to other people or resources that helped you build this application. -->

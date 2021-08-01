@@ -1,11 +1,31 @@
 import './App.css';
+import Main from './components/Main';
+import Data from './components/Data';
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
+class  App extends React.Component {
+  render(){
+    return (
+      <div>
+      <>
+      <header className="App-header">
     
-    </div>
-  );
+      <h1 >
+        City Explorer
+      </h1>
+      <p>Enter the location below</p>
+      </header>
+      
+
+      </>
+      
+      <Main/>
+
+      </div>
+
+      );
+  }
+
 }
 
 export default App;
