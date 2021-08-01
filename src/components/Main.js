@@ -1,14 +1,17 @@
 import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
+import Image from 'react-bootstrap/Image';
+
 import React from "react";
 import '../App.css'
 import axios from "axios";
 import Data from './Data';
+import '../App.css'
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
-console.log("Key is", API_KEY);
+//console.log("Key is", API_KEY);
 
 
 class Main extends React.Component {
@@ -31,6 +34,8 @@ class Main extends React.Component {
         console.log(cityName);
         const URL = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${cityName}&format=json`;
         let result = await (axios.get(URL));
+
+
         this.setState({
             lat: result.data[0].lat,
             lon: result.data[0].lon,
@@ -41,9 +46,20 @@ class Main extends React.Component {
 
         })
 
+        let mapData = await axios.get(`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${this.state.lat},${this.state.lon}
+        &markers=icon:small-gray-cutout|${this.state.lat},${this.state.lon}`);
+
+
+        this.setState({
+            link: mapData.config.url,
+        });
+
     }
 
-  
+
+
+
+
     render() {
         return (
             <>
@@ -59,7 +75,7 @@ class Main extends React.Component {
                     </center>
 
                 </Form>
-
+<center>
                 <Data
                     lon={this.state.lon}
                     lat={this.state.lat}
@@ -67,8 +83,10 @@ class Main extends React.Component {
                     class={this.state.class}
                     type={this.state.type}
                     show={this.state.show}
-
                 />
+                <Image  style={{'width':'1080px','height':'400px'}}src={this.state.link} thumbnail />
+
+</center>
                 {
 
                 }
