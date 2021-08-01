@@ -13,7 +13,11 @@
   }
 }
 
+Image{
 
+  background: none;
+  border: none;
+}
 Button{
   width: 200px;
 }
