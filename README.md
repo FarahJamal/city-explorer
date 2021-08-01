@@ -18,6 +18,8 @@ React App that help user to check the exact location for every city and a map fo
 
  1-8-2021 1:06pm - Application has been initialized. -->
  1-8-2021 1:53pm - Application has the front end. -->
+ 1-8-2021 2:53pm - Application can preview data to the user with a card. -->
+ 
  
 
 
