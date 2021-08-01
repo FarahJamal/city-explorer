@@ -13,11 +13,12 @@ React App that help user to check the exact location for every city and a map fo
 3-npm start 
 ## Architecture
 <!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
-
 ## Change Log
 
  1-8-2021 1:06pm - Application has been initialized. -->
  1-8-2021 1:53pm - Application has the front end. -->
+ 1-8-2021 2:53pm - Application can preview data to the user with a card. -->
+
  
 
 

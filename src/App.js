@@ -1,6 +1,5 @@
 import './App.css';
 import Main from './components/Main';
-import Data from './components/Data';
 import React from "react";
 
 class  App extends React.Component {
