@@ -2,12 +2,11 @@ import Button from 'react-bootstrap/Button';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
 import Image from 'react-bootstrap/Image';
-
 import React from "react";
 import '../App.css'
 import axios from "axios";
 import Data from './Data';
-import '../App.css'
+import ErrorModal from './ErrorModal';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -23,49 +22,75 @@ class Main extends React.Component {
             display_name: '',
             class: '',
             type: '',
-            show: false
+            show: false,
+            showErr: false
         }
     }
 
     getLocationData = async (event) => {
-        event.preventDefault();
-        let cityName = event.target.city.value;
-        event.target.city.value = '';
-        console.log(cityName);
-        const URL = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${cityName}&format=json`;
-        let result = await (axios.get(URL));
+        try {
+            event.preventDefault();
+            let cityName = event.target.city.value;
+            event.target.city.value = '';
+            console.log(cityName);
+            const URL = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${cityName}&format=json`;
+            let result = await (axios.get(URL));
 
 
-        this.setState({
-            lat: result.data[0].lat,
-            lon: result.data[0].lon,
-            display_name: result.data[0].display_name,
-            class: result.data[0].class,
-            type: result.data[0].type,
-            show: true
+            this.setState({
+                lat: result.data[0].lat,
+                lon: result.data[0].lon,
+                display_name: result.data[0].display_name,
+                class: result.data[0].class,
+                type: result.data[0].type,
+                show: true
 
-        })
+            })
 
-        let mapData = await axios.get(`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${this.state.lat},${this.state.lon}
+            let mapData = await axios.get(`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${this.state.lat},${this.state.lon}
         &markers=icon:small-gray-cutout|${this.state.lat},${this.state.lon}`);
 
 
-        this.setState({
-            link: mapData.config.url,
-        });
+            this.setState({
+                link: mapData.config.url,
+            });
+        }
+        catch (e) {
+            this.setState({
+                showErr: true,
+                statusCode: e.response.status,
+                statusErrMsg: e.response.data.error,
 
+            });
+
+
+        };
+
+    }
+
+    handleClose = () => {
+        this.setState({
+            showErr: false
+        })
     }
 
 
 
-
-
     render() {
+        const validImage = this.state.show;
+        let image;
+        if (validImage) {
+            image = (<Image style={{ 'width': '1080px', 'height': '400px' }} src={this.state.link} thumbnail />
+          );
+        }
+          else {
+            image = (<div></div>);
+        }
         return (
             <>
                 <Form className="form" onSubmit={this.getLocationData} >
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control type="text" placeholder="Enter city name" name='city' />
+                        <Form.Control  type="text" placeholder="Enter city name" name='city' style={{ 'text-align': 'center'}}/>
 
                     </Form.Group>
                     <center>
@@ -75,18 +100,26 @@ class Main extends React.Component {
                     </center>
 
                 </Form>
-<center>
-                <Data
-                    lon={this.state.lon}
-                    lat={this.state.lat}
-                    display_name={this.state.display_name}
-                    class={this.state.class}
-                    type={this.state.type}
-                    show={this.state.show}
-                />
-                <Image  style={{'width':'1080px','height':'400px'}}src={this.state.link} thumbnail />
+                <center>
+                    <Data
+                        lon={this.state.lon}
+                        lat={this.state.lat}
+                        display_name={this.state.display_name}
+                        class={this.state.class}
+                        type={this.state.type}
+                        show={this.state.show}
+                    />
 
-</center>
+                    {image}
+                    <ErrorModal
+                        showErr={this.state.showErr}
+                        statusCode={this.state.statusCode}
+                        statusErrMsg={this.state.statusErrMsg}
+                        hideErr={this.handleClose}
+
+                    />
+
+                </center>
                 {
 
                 }
