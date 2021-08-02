@@ -2,7 +2,8 @@
 
 **Author**: Farah Jamal
 **Version**: 1.0.1 
-
+## Deployed site:
+https://city-explorer-301.netlify.app/
 ## Overview
 React App that help user to check the exact location for every city and a map fo it.
 **this is a part of assignmet for CODE301/ASAC/Code_fellows**
