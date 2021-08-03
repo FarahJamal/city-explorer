@@ -52,22 +52,10 @@ class Main extends React.Component {
             let mapData = await axios.get(`https://maps.locationiq.com/v3/staticmap?key=${API_KEY}&center=${this.state.lat},${this.state.lon}
         &markers=icon:small-gray-cutout|${this.state.lat},${this.state.lon}`);
 
-
             this.setState({
                 link: mapData.config.url,
             });
 
-            let cityNameW = this.state.display_name.split(',')[0];
-            let latW = Number(this.state.lat).toFixed(2);
-            let lonW = Number(this.state.lon).toFixed(2);
-            let URLW = `http://localhost:3001/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
-            let weatherData = await axios.get(URLW);
-            
-        //console.log(weatherData.data[0].date);
-            this.setState({
-                date : weatherData.data.date,
-                description:weatherData.data.description
-            })
         }
         catch (e) {
             this.setState({
@@ -79,7 +67,7 @@ class Main extends React.Component {
 
 
         };
-
+        this.renderWeather();
     }
 
     handleClose = () => {
@@ -88,7 +76,20 @@ class Main extends React.Component {
         })
     }
 
+ // Rendering Weather (Getting Response Fron API)
+ renderWeather = async () => {
+     
+  let cityNameW = this.state.display_name.split(',')[0];
+  let latW = Number(this.state.lat).toFixed(2);
+  let lonW = Number(this.state.lon).toFixed(2);
+  let weatherUrl = `http://localhost:3001/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
 
+  let weatherData = await axios.get(weatherUrl)
+    await this.setState({
+      WeatherInformation: weatherData.data,
+      showWeather: true,
+    })
+  }
 
     render() {
         const validImage = this.state.show;
@@ -128,11 +129,12 @@ class Main extends React.Component {
                         type={this.state.type}
                         show={this.state.show}
                     />
-                    <Weather
-               date={this.state.date}
-                desc={this.state.description}
+                    <Weather 
+                    WeatherInformation={this.state.WeatherInformation} 
+                    showWeather={this.state.showWeather} 
+                    cityInformation={this.state.display_name} 
+                    renderWeather={this.renderWeather} />
 
-            />
                     {image}
 
                     <ErrorModal
@@ -151,3 +153,5 @@ class Main extends React.Component {
 }
 
 export default Main;
+
+
