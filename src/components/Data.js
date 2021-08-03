@@ -13,7 +13,8 @@ render(){
   let form;
   if (validForm) {
     form = ( 
-        <Card show={false}  style={{'width':'1080px','margin-top':'50px'}}>
+        <Card show={false}  style={{'width':'1080px','margin-top':'50px', background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
+        background: 'linear-gradient(to bottom, #434343, #000000)', boxShadow: '2px 2px 2px black',color:'white'}}>
       <Card.Header>{this.props.type}</Card.Header>
           <Card.Body>
             <Card.Title>{this.props.display_name}</Card.Title>

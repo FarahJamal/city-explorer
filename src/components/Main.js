@@ -85,7 +85,7 @@ class Main extends React.Component {
   let lonW = Number(this.state.lon).toFixed(2);
 
   let weatherUrl = `http://localhost:${PORT}/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
-console.log(weatherUrl);
+        console.log(weatherUrl);
   let weatherData = await axios.get(weatherUrl)
     await this.setState({
       WeatherInformation: weatherData.data,
@@ -98,7 +98,8 @@ console.log(weatherUrl);
         let image;
         let data;
         if (validImage) {
-            image = (<Image style={{ 'width': '1080px', 'height': '400px' }} src={this.state.link} thumbnail />
+            image = (<Image style={{ 'width': '1080px', 'height': '400px','margin-bottom':'20px', background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
+            background: 'linear-gradient(to bottom, #434343, #000000)', boxShadow: '2px 2px 2px black',color:'white' }} src={this.state.link} thumbnail />
             );
 
             //call weather from weather.js
