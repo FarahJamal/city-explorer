@@ -11,6 +11,7 @@ import Weather from './Weather';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const PORT=3001;
 //console.log("Key is", API_KEY);
 
 
@@ -82,8 +83,9 @@ class Main extends React.Component {
   let cityNameW = this.state.display_name.split(',')[0];
   let latW = Number(this.state.lat).toFixed(2);
   let lonW = Number(this.state.lon).toFixed(2);
-  let weatherUrl = `http://localhost:3001/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
 
+  let weatherUrl = `http://localhost:${PORT}/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
+console.log(weatherUrl);
   let weatherData = await axios.get(weatherUrl)
     await this.setState({
       WeatherInformation: weatherData.data,
