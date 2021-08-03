@@ -11,6 +11,7 @@ import Weather from './Weather';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
+const APP_SERVER=process.env.REACT_APP_SERVER;
 const PORT=3001;
 //console.log("Key is", API_KEY);
 
@@ -84,7 +85,7 @@ class Main extends React.Component {
   let latW = Number(this.state.lat).toFixed(2);
   let lonW = Number(this.state.lon).toFixed(2);
 
-  let weatherUrl = `https://city-explorer-api-301d27.herokuapp.com//weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
+  let weatherUrl = `${APP_SERVER}/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
         console.log(weatherUrl);
   let weatherData = await axios.get(weatherUrl)
     await this.setState({
