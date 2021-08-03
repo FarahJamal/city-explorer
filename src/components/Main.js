@@ -84,7 +84,7 @@ class Main extends React.Component {
   let latW = Number(this.state.lat).toFixed(2);
   let lonW = Number(this.state.lon).toFixed(2);
 
-  let weatherUrl = `http://localhost:${PORT}/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
+  let weatherUrl = `https://city-explorer-api-301d27.herokuapp.com//weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
         console.log(weatherUrl);
   let weatherData = await axios.get(weatherUrl)
     await this.setState({
