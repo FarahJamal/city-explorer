@@ -7,6 +7,7 @@ import '../App.css'
 import axios from "axios";
 import Data from './Data';
 import ErrorModal from './ErrorModal';
+import Weather from './Weather';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -26,13 +27,14 @@ class Main extends React.Component {
             showErr: false
         }
     }
+  
 
     getLocationData = async (event) => {
         try {
             event.preventDefault();
             let cityName = event.target.city.value;
             event.target.city.value = '';
-            console.log(cityName);
+            //console.log(cityName);
             const URL = `https://us1.locationiq.com/v1/search.php?key=${API_KEY}&q=${cityName}&format=json`;
             let result = await (axios.get(URL));
 
@@ -54,6 +56,18 @@ class Main extends React.Component {
             this.setState({
                 link: mapData.config.url,
             });
+
+            let cityNameW = this.state.display_name.split(',')[0];
+            let latW = Number(this.state.lat).toFixed(2);
+            let lonW = Number(this.state.lon).toFixed(2);
+            let URLW = `http://localhost:3001/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
+            let weatherData = await axios.get(URLW);
+            
+        //console.log(weatherData.data[0].date);
+            this.setState({
+                date : weatherData.data.date,
+                description:weatherData.data.description
+            })
         }
         catch (e) {
             this.setState({
@@ -79,22 +93,27 @@ class Main extends React.Component {
     render() {
         const validImage = this.state.show;
         let image;
+        let data;
         if (validImage) {
             image = (<Image style={{ 'width': '1080px', 'height': '400px' }} src={this.state.link} thumbnail />
-          );
+            );
+
+            //call weather from weather.js
+        
         }
-          else {
+        else {
             image = (<div></div>);
         }
+
         return (
             <>
                 <Form className="form" onSubmit={this.getLocationData} >
                     <Form.Group className="mb-3" controlId="formBasicEmail">
-                        <Form.Control  type="text" placeholder="Enter city name" name='city' style={{ 'text-align': 'center'}}/>
+                        <Form.Control type="text" placeholder="Enter city name" name='city' style={{ 'text-align': 'center' }} />
 
                     </Form.Group>
                     <center>
-                        <Button variant="dark" type="submit" className="btn" >
+                        <Button variant="dark" type="submit" className="btn" onClick={this.state.cityName}>
                             Explore!
                         </Button>
                     </center>
@@ -109,8 +128,13 @@ class Main extends React.Component {
                         type={this.state.type}
                         show={this.state.show}
                     />
+                    <Weather
+               date={this.state.date}
+                desc={this.state.description}
 
+            />
                     {image}
+
                     <ErrorModal
                         showErr={this.state.showErr}
                         statusCode={this.state.statusCode}
@@ -120,9 +144,7 @@ class Main extends React.Component {
                     />
 
                 </center>
-                {
-
-                }
+               
             </>
         );
     }
