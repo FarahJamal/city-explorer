@@ -12,6 +12,7 @@ import Weather from './Weather';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 const APP_SERVER=process.env.REACT_APP_SERVER;
+const WEATHER_API=process.env.REACT_APP_API_KEY_WEATHER;
 const PORT=3001;
 //console.log("Key is", API_KEY);
 
@@ -69,7 +70,7 @@ class Main extends React.Component {
 
 
         };
-        this.renderWeather();
+        this.RenderWeather();
     }
 
     handleClose = () => {
@@ -78,21 +79,26 @@ class Main extends React.Component {
         })
     }
 
- // Rendering Weather (Getting Response Fron API)
- renderWeather = async () => {
-     
-  let cityNameW = this.state.display_name.split(',')[0];
-  let latW = Number(this.state.lat).toFixed(2);
-  let lonW = Number(this.state.lon).toFixed(2);
+  // Rendering Weather (Getting Response Fron API)
 
-  let weatherUrl = `${APP_SERVER}/weather?lat=${latW}&lon=${lonW}&searchQuery=${cityNameW}`;
-        console.log(weatherUrl);
-  let weatherData = await axios.get(weatherUrl)
-    await this.setState({
-      WeatherInformation: weatherData.data,
-      showWeather: true,
-    })
-  }
+  RenderWeather = async () => {
+    let cityNameW = this.state.display_name.split(',')[0];
+
+    let latW = Number(this.state.lat).toFixed(2);
+    let lonW = Number(this.state.lon).toFixed(2);
+  
+    let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latW}&lon=${lonW}&key=${WEATHER_API}`;
+          //console.log(weatherUrl);
+    let weatherData = await axios.get(weatherUrl)
+    //console.log(weatherData);
+
+      await this.setState({
+        WeatherInformation: weatherData.data.data,
+        showWeather: true,
+      })
+      //console.log(weatherData.data.data[0].valid_date);
+    }
+
 
     render() {
         const validImage = this.state.show;
@@ -137,7 +143,8 @@ class Main extends React.Component {
                     WeatherInformation={this.state.WeatherInformation} 
                     showWeather={this.state.showWeather} 
                     cityInformation={this.state.display_name} 
-                    renderWeather={this.renderWeather} />
+                    renderWeather={this.RenderWeather} 
+/>
 
                     {image}
 
