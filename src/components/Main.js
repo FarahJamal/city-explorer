@@ -8,12 +8,13 @@ import axios from "axios";
 import Data from './Data';
 import ErrorModal from './ErrorModal';
 import Weather from './Weather';
+import Movies from './Movies';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
-const APP_SERVER=process.env.REACT_APP_SERVER;
-const WEATHER_API=process.env.REACT_APP_API_KEY_WEATHER;
-const PORT=3001;
+const APP_SERVER = process.env.REACT_APP_SERVER;
+const WEATHER_API = process.env.REACT_APP_API_KEY_WEATHER;
+const PORT = 3001;
 //console.log("Key is", API_KEY);
 
 
@@ -30,7 +31,7 @@ class Main extends React.Component {
             showErr: false
         }
     }
-  
+
 
     getLocationData = async (event) => {
         try {
@@ -71,6 +72,7 @@ class Main extends React.Component {
 
         };
         this.RenderWeather();
+        this.RenderMovies();
     }
 
     handleClose = () => {
@@ -79,38 +81,53 @@ class Main extends React.Component {
         })
     }
 
-  // Rendering Weather (Getting Response Fron API)
 
-  RenderWeather = async () => {
-    let cityNameW = this.state.display_name.split(',')[0];
+    RenderWeather = async () => {
+        //let cityNameW = this.state.display_name.split(',')[0];
 
-    let latW = Number(this.state.lat).toFixed(2);
-    let lonW = Number(this.state.lon).toFixed(2);
-  
-    let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latW}&lon=${lonW}&key=${WEATHER_API}`;
-          //console.log(weatherUrl);
-    let weatherData = await axios.get(weatherUrl)
-    //console.log(weatherData);
+        let latW = Number(this.state.lat).toFixed(2);
+        let lonW = Number(this.state.lon).toFixed(2);
 
-      await this.setState({
-        WeatherInformation: weatherData.data.data,
-        showWeather: true,
-      })
-      //console.log(weatherData.data.data[0].valid_date);
+        // let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latW}&lon=${lonW}&key=${WEATHER_API}`;
+        let weatherUrl = `http://localhost:4444/weather?lat=${latW}&lon=${lonW}`|| `https://city-explorer-api-301d27.herokuapp.com/weather?lat=${latW}&lon=${lonW}`;
+        //console.log(weatherUrl);
+        let weatherData = await axios.get(weatherUrl)
+        //console.log(weatherData);
+
+        await this.setState({
+            WeatherInformation: weatherData.data,
+            showWeather: true,
+        })
+        console.log(this.state.WeatherInformation);
     }
 
+    RenderMovies = async () => {
+        let cityName = this.state.display_name.split(',')[0];
+        let moviesUrl = `http://localhost:4444/movies?city=${cityName}` || `https://city-explorer-api-301d27.herokuapp.com/movies?city=${cityName}`;
+        let moviesData = await axios.get(moviesUrl);
 
+        await this.setState({
+            moviesInfo: moviesData.data,
+            showMovies: true,
+        })
+
+        console.log(this.state.moviesInfo);
+
+
+    }
     render() {
         const validImage = this.state.show;
         let image;
         let data;
         if (validImage) {
-            image = (<Image style={{ 'width': '1080px', 'height': '400px','margin-bottom':'20px', background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
-            background: 'linear-gradient(to bottom, #434343, #000000)', boxShadow: '2px 2px 2px black',color:'white' }} src={this.state.link} thumbnail />
+            image = (<Image style={{
+                'width': '1080px', 'height': '400px', 'margin-bottom': '20px', background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
+                background: 'linear-gradient(to bottom, #434343, #000000)', boxShadow: '2px 2px 2px black', color: 'white'
+            }} src={this.state.link} thumbnail />
             );
 
             //call weather from weather.js
-        
+
         }
         else {
             image = (<div></div>);
@@ -139,12 +156,20 @@ class Main extends React.Component {
                         type={this.state.type}
                         show={this.state.show}
                     />
-                    <Weather 
-                    WeatherInformation={this.state.WeatherInformation} 
-                    showWeather={this.state.showWeather} 
-                    cityInformation={this.state.display_name} 
-                    renderWeather={this.RenderWeather} 
-/>
+                    <Weather
+                        WeatherInformation={this.state.WeatherInformation}
+                        showWeather={this.state.showWeather}
+                        cityInformation={this.state.display_name}
+                        renderWeather={this.RenderWeather}
+                    />
+                    <Movies
+                        moviesInfo={this.state.moviesInfo}
+                        showMovies={this.state.showMovies}
+                        cityInformation={this.state.display_name}
+                        renderMovies={this.RenderMovies}
+
+                    />
+
 
                     {image}
 
@@ -157,7 +182,7 @@ class Main extends React.Component {
                     />
 
                 </center>
-               
+
             </>
         );
     }

@@ -25,8 +25,9 @@ class  App extends React.Component {
       
 
       </>
-      
+      <div style={{'float':'left'}}>
       <Main/>
+      </div>
       <Footer/>
       </body>
 

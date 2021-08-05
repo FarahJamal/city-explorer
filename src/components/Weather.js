@@ -3,27 +3,32 @@ import { Card } from "react-bootstrap";
 
 import React from "react";
 
-const  getWeatherIcon =(condition)=> {
-    if (condition < 300) {
+function  getWeatherIcon (condition) {
+    if (condition < -16.1111) {
       return '🌩';
-    } else if (condition < 400) {
+    } else if (condition < 4.44444) {
       return '🌧';
-    } else if (condition < 600) {
+    } else if (condition < 16) {
       return '☔️';
-    } else if (condition < 700) {
+    } else if (condition < 21.1111) {
       return '☃️';
-    } else if (condition < 800) {
+    } else if (condition < 26.6667) {
       return '🌫';
-    } else if (condition == 800) {
+    } else if (condition == 26.6667) {
       return '☀️';
-    } else if (condition <= 804) {
+    } else if (condition <= 28.8889) {
       return '☁️';
-    } else {
+    } 
+    else if(condition <=37){
+        return '☀🌞😎';
+    }
+    else {
       return '🤷‍';
     }
   }
-class Weather extends React.Component {
+  let urlImg=`https://www.weatherbit.io/static/img/icons/`;
 
+class Weather extends React.Component {
     render() {
    
         return (
@@ -43,11 +48,9 @@ class Weather extends React.Component {
                             
                              {this.props.WeatherInformation.map( element =>
                              <Card.Text>
-                                
-                                {element.valid_date} {' : '} {element.weather.description}{'with Low temp: '}{
-
-                                 element.main.temp_min}{this.getWeatherIcon(element.main.temp_min)}
-                                                {'  and max temp: '} {element.main.temp_max}                                          
+                          
+                                           {element.date} {element.description}
+                                     
                                         </Card.Text>                                
                                 
 
