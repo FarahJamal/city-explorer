@@ -2,8 +2,8 @@ body{
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: url(map.jpg) no-repeat;
-  background-size:cover;
+  background: url(back.jpg);
+  margin-bottom:30px;
 
 }
 footer{
@@ -15,6 +15,9 @@ footer{
   text-align: center;
 }
 
+.carousel .carousel-indicators {
+  display: none;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

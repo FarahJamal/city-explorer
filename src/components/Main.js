@@ -90,7 +90,7 @@ class Main extends React.Component {
 
         // let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latW}&lon=${lonW}&key=${WEATHER_API}`;
         // `http://localhost:4444/weather?lat=${latW}&lon=${lonW}`
-        let weatherUrl =`https://city-explorer-api-301d27.herokuapp.com/weather?lat=${latW}&lon=${lonW}`;
+        let weatherUrl = `https://city-explorer-api-301d27.herokuapp.com/weather?lat=${latW}&lon=${lonW}`;
         //console.log(weatherUrl);
         let weatherData = await axios.get(weatherUrl)
         //console.log(weatherData);
@@ -99,22 +99,37 @@ class Main extends React.Component {
             WeatherInformation: weatherData.data,
             showWeather: true,
         })
-        console.log(this.state.WeatherInformation);
+   //     console.log(this.state.WeatherInformation);
     }
 
     RenderMovies = async () => {
-        let cityName = this.state.display_name.split(',')[0];
-        //`http://localhost:4444/movies?city=${cityName}` ||
-        let moviesUrl =  `https://city-explorer-api-301d27.herokuapp.com/movies?city=${cityName}`;
-        let moviesData = await axios.get(moviesUrl);
+        try {
+            let cityName = this.state.display_name.split(',')[0];
+            //`http://localhost:4444/movies?city=${cityName}` ||
+            let moviesUrl =`https://city-explorer-api-301d27.herokuapp.com/movies?city=${cityName}`
+            //let moviesUrl = `http://localhost:4444/movies?city=${cityName}`;
+            let moviesData = await axios.get(moviesUrl);
 
-        await this.setState({
-            moviesInfo: moviesData.data,
-            showMovies: true,
-        })
 
-        console.log(this.state.moviesInfo);
+            //console.log(moviesData.data);
+            await this.setState({
 
+                moviesInfo: moviesData.data,
+                showMovies: true,
+            })
+
+        }
+        catch (e) {
+            if (e.response && e.response.data) {
+                await this.setState({
+                errorMessage: e.response && e.response.status + ': ' + e.response.data.error,
+                showMovies: false,
+
+ })
+                console.log('error');
+               // console.log(this.state.moviesInfo[0].message); // some reason error message
+            }
+        }
 
     }
     render() {
