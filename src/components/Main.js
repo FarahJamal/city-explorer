@@ -89,7 +89,8 @@ class Main extends React.Component {
         let lonW = Number(this.state.lon).toFixed(2);
 
         // let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latW}&lon=${lonW}&key=${WEATHER_API}`;
-        let weatherUrl = `http://localhost:4444/weather?lat=${latW}&lon=${lonW}`|| `https://city-explorer-api-301d27.herokuapp.com/weather?lat=${latW}&lon=${lonW}`;
+        // `http://localhost:4444/weather?lat=${latW}&lon=${lonW}`
+        let weatherUrl =`https://city-explorer-api-301d27.herokuapp.com/weather?lat=${latW}&lon=${lonW}`;
         //console.log(weatherUrl);
         let weatherData = await axios.get(weatherUrl)
         //console.log(weatherData);
@@ -103,7 +104,8 @@ class Main extends React.Component {
 
     RenderMovies = async () => {
         let cityName = this.state.display_name.split(',')[0];
-        let moviesUrl = `http://localhost:4444/movies?city=${cityName}` || `https://city-explorer-api-301d27.herokuapp.com/movies?city=${cityName}`;
+        //`http://localhost:4444/movies?city=${cityName}` ||
+        let moviesUrl =  `https://city-explorer-api-301d27.herokuapp.com/movies?city=${cityName}`;
         let moviesData = await axios.get(moviesUrl);
 
         await this.setState({
