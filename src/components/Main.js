@@ -9,6 +9,7 @@ import Data from './Data';
 import ErrorModal from './ErrorModal';
 import Weather from './Weather';
 import Movies from './Movies';
+import Covid from './Covid';
 
 
 const API_KEY = process.env.REACT_APP_API_KEY;
@@ -72,6 +73,8 @@ class Main extends React.Component {
 
         };
         this.RenderWeather();
+        this.RenderCovid();
+
         this.RenderMovies();
     }
 
@@ -83,6 +86,7 @@ class Main extends React.Component {
 
 
     RenderWeather = async () => {
+        try{
         //let cityNameW = this.state.display_name.split(',')[0];
 
         let latW = Number(this.state.lat).toFixed(2);
@@ -91,6 +95,7 @@ class Main extends React.Component {
         // let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latW}&lon=${lonW}&key=${WEATHER_API}`;
         // `http://localhost:4444/weather?lat=${latW}&lon=${lonW}`
         let weatherUrl = `https://city-explorer-api-301d27.herokuapp.com/weather?lat=${latW}&lon=${lonW}`;
+        //let weatherUrl = `http://localhost:4444/weather?lat=${latW}&lon=${lonW}`;
         //console.log(weatherUrl);
         let weatherData = await axios.get(weatherUrl)
         //console.log(weatherData);
@@ -99,14 +104,59 @@ class Main extends React.Component {
             WeatherInformation: weatherData.data,
             showWeather: true,
         })
-   //     console.log(this.state.WeatherInformation);
+
+    }
+           catch (e) {
+            if (e.response && e.response.data) {
+                await this.setState({
+                    errorMessage: e.response && e.response.status + ': ' + e.response.data.error,
+                    showMovies: false,
+
+                })
+                console.log('error');
+                // console.log(this.state.moviesInfo[0].message); // some reason error message
+            }
+        }
+
     }
 
+    RenderCovid = async () => {
+try{
+        let latW = Number(this.state.lat).toFixed(2);
+        let lonW = Number(this.state.lon).toFixed(2);
+
+        // let weatherUrl = `https://api.weatherbit.io/v2.0/forecast/daily?lat=${latW}&lon=${lonW}&key=${WEATHER_API}`;
+        // `http://localhost:4444/weather?lat=${latW}&lon=${lonW}`
+        let covidUrl = `https://city-explorer-api-301d27.herokuapp.com/covid?lat=${latW}&lon=${lonW}`;
+        //let covidUrl = `http://localhost:4444/covid?lat=${latW}&lon=${lonW}`;
+        let covidData = await axios.get(covidUrl);
+        
+        await this.setState({
+            covidInfo: covidData.data,
+
+            showCovid:true,
+        })
+        console.log(covidData.data);
+    }
+
+    catch (e) {
+        if (e.response && e.response.data) {
+            await this.setState({
+                errorMessage: e.response && e.response.status + ': ' + e.response.data.error,
+                showMovies: false,
+
+            })
+            console.log('error');
+            // console.log(this.state.moviesInfo[0].message); // some reason error message
+        }
+    }
+
+    }
     RenderMovies = async () => {
         try {
             let cityName = this.state.display_name.split(',')[0];
             //`http://localhost:4444/movies?city=${cityName}` ||
-            let moviesUrl =`https://city-explorer-api-301d27.herokuapp.com/movies?city=${cityName}`
+            let moviesUrl = `https://city-explorer-api-301d27.herokuapp.com/movies?city=${cityName}`
             //let moviesUrl = `http://localhost:4444/movies?city=${cityName}`;
             let moviesData = await axios.get(moviesUrl);
 
@@ -122,12 +172,12 @@ class Main extends React.Component {
         catch (e) {
             if (e.response && e.response.data) {
                 await this.setState({
-                errorMessage: e.response && e.response.status + ': ' + e.response.data.error,
-                showMovies: false,
+                    errorMessage: e.response && e.response.status + ': ' + e.response.data.error,
+                    showMovies: false,
 
- })
+                })
                 console.log('error');
-               // console.log(this.state.moviesInfo[0].message); // some reason error message
+                // console.log(this.state.moviesInfo[0].message); // some reason error message
             }
         }
 
@@ -173,6 +223,16 @@ class Main extends React.Component {
                         type={this.state.type}
                         show={this.state.show}
                     />
+
+                    <Covid
+
+                        countryCode={this.state.covidInfo}
+                        showCovid={this.state.showCovid}
+
+                        renderCovid={this.RenderCovid}
+                    />
+
+
                     <Weather
                         WeatherInformation={this.state.WeatherInformation}
                         showWeather={this.state.showWeather}
@@ -186,6 +246,7 @@ class Main extends React.Component {
                         renderMovies={this.RenderMovies}
 
                     />
+
 
 
                     {image}

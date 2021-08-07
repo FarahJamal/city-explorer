@@ -51,7 +51,7 @@ class Weather extends React.Component {
                           
                                            {element.date} {element.description}
                                      
-                                        </Card.Text>                                
+                            </Card.Text>                                
                                 
 
                             )
