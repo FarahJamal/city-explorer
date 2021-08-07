@@ -41,7 +41,7 @@ class Covid extends React.Component {
 
 
                     <Card style={{
-                        'width': '67.5em', 'margin-top': '50px', 'margin-bottom': "50px", background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
+                        'width': '80%', 'margin-top': '50px', 'margin-bottom': "50px", background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
                         background: 'linear-gradient(to bottom, #434343, #000000)', boxShadow: '2px 2px 2px black', color: 'white'
                     }} >
 
@@ -52,11 +52,9 @@ class Covid extends React.Component {
 <Card.Text>
     {this.props.countryCode[0].continent}
 </Card.Text>
-<div style={{width: '400px'}}>
+<div style={{width: '20em',height:''}}>
 
                         <Pie style={{
-      width: 300,
-      height: 200,
     }}
                             data={chartData}
                             options={{

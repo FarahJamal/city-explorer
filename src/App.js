@@ -2,6 +2,7 @@ import './App.css';
 import Main from './components/Main';
 import React from "react";
 import Footer from './components/footer';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class  App extends React.Component {
   render(){

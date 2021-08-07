@@ -13,12 +13,11 @@ class Movies extends React.Component {
             <>
                 {this.props.showMovies ? 
 
-
                     <Card style={{
-                        'width': '1080px', 'height': '800px', 'margin-top': '50px', 'margin-bottom': "50px", background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
+                        'width': '80%', 'margin-top': '50px', 'margin-bottom': "50px", background: '#000000', background: '-webkit-linear-gradient(to bottom, #434343, #000000)',
                         background: 'linear-gradient(to bottom, #434343, #000000)', boxShadow: '2px 2px 2px black', color: 'white'
                     }} >
-                        <Carousel style={{ width: '900px', margin: 'auto' ,'carousel-indicators':'none'}}
+                        <Carousel style={{ width: '70%', margin: 'auto' ,'carousel-indicators':'none'}}
                         >
                             {this.props.moviesInfo.map(item => (
 
